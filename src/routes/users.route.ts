@@ -9,16 +9,15 @@ import {
 import {
   changeMyPassword,
   deleteMyAccount,
+  getUsers,
   updateMe,
 } from '../controllers/users.controller';
 
 const router = express.Router();
 
-router.get('/', authMiddleware);
+router.get('/', authMiddleware, getUsers);
 
 router.delete('/me', authMiddleware, deleteMyAccount);
-
-router.get('/me', authMiddleware);
 
 router.patch('/me', authMiddleware, validateRequest(userSchema), updateMe);
 
