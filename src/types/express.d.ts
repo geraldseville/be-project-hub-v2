@@ -1,9 +1,11 @@
-import type { User } from '@prisma/client';
+import type { User as PrismaUser } from '@prisma/client';
+import type { Multer } from 'multer';
 
 declare global {
   namespace Express {
     interface Request {
-      user?: User | null;
+      user?: PrismaUser | null;
+      file?: Multer.File;
     }
   }
 }
