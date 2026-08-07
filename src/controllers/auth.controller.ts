@@ -3,7 +3,7 @@ import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 
 import { cookieOptions, generateToken } from '../lib/jwt';
-import { authRepository } from '../repositories/auth.repositories';
+import { authRepository } from '../repositories/auth.repository';
 import type { LoginDto, RegisterDto } from '../types/auth.dto';
 
 export const login = async (
@@ -17,7 +17,7 @@ export const login = async (
   if (!user) {
     res.status(401).json({
       status: 'error',
-      message: 'invalid email or password.',
+      error: 'invalid email or password.',
     });
 
     return;
@@ -28,7 +28,7 @@ export const login = async (
   if (!isPasswordValid) {
     res.status(401).json({
       status: 'error',
-      message: 'invalid email or password.',
+      error: 'invalid email or password.',
     });
 
     return;
@@ -52,7 +52,32 @@ export const logout = async (_req: Request, res: Response): Promise<void> => {
 
   res.status(200).json({
     status: 'success',
-    message: 'Logged out successfully.',
+    message: 'logged out successfully.',
+  });
+};
+
+export const me = async (req: Request, res: Response): Promise<void> => {
+  const userId = req.user!.id;
+
+  const user = await authRepository.findUserById(userId);
+
+  if (!user) {
+    res.status(404).json({
+      status: 'error',
+      message: 'user not found.',
+    });
+
+    return;
+  }
+
+  const { password: _, ...safeUser } = user;
+
+  res.status(200).json({
+    status: 'success',
+    message: 'successfully retrieved current user.',
+    data: {
+      user: safeUser,
+    },
   });
 };
 
