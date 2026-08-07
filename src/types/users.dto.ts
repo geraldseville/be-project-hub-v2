@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 import {
-  userChangePasswordSchema,
-  userSchema,
+  changeUserPasswordSchema,
+  updateUserSchema,
 } from '../validators/users.validator';
 
-export type UserChangePasswordDto = z.infer<typeof userChangePasswordSchema>;
+export type ChangeUserPasswordDto = z.infer<typeof changeUserPasswordSchema>;
 
-export type UserDto = z.infer<typeof userSchema>;
+export type UpdateUserDto = z.infer<typeof updateUserSchema>;

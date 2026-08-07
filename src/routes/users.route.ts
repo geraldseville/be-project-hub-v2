@@ -3,8 +3,8 @@ import express from 'express';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import { validateRequest } from '../middlewares/validate.middleware';
 import {
-  userChangePasswordSchema,
-  userSchema,
+  changeUserPasswordSchema,
+  updateUserSchema,
 } from '../validators/users.validator';
 import {
   changeMyPassword,
@@ -15,17 +15,22 @@ import {
 
 const router = express.Router();
 
-router.get('/', authMiddleware, getUsers);
-
-router.delete('/me', authMiddleware, deleteMyAccount);
-
-router.patch('/me', authMiddleware, validateRequest(userSchema), updateMe);
-
 router.patch(
   '/me/change-password',
   authMiddleware,
-  validateRequest(userChangePasswordSchema),
+  validateRequest(changeUserPasswordSchema),
   changeMyPassword,
+);
+
+router.delete('/me', authMiddleware, deleteMyAccount);
+
+router.get('/', authMiddleware, getUsers);
+
+router.patch(
+  '/me',
+  authMiddleware,
+  validateRequest(updateUserSchema),
+  updateMe,
 );
 
 export default router;

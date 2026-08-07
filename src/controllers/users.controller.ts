@@ -3,10 +3,10 @@ import type { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 
 import { usersRepository } from '../repositories/users.repository';
-import type { UserChangePasswordDto, UserDto } from '../types/users.dto';
+import type { ChangeUserPasswordDto, UpdateUserDto } from '../types/users.dto';
 
 export const changeMyPassword = async (
-  req: Request<{}, {}, UserChangePasswordDto>,
+  req: Request<{}, {}, ChangeUserPasswordDto>,
   res: Response,
 ): Promise<void> => {
   if (!req.user) {
@@ -82,7 +82,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const updateMe = async (
-  req: Request<{}, {}, UserDto>,
+  req: Request<{}, {}, UpdateUserDto>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {

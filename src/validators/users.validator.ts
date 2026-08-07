@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 import { isValidTimezone } from '../utils/dateTime.utils';
 
-export const userChangePasswordSchema = z.object({
+export const changeUserPasswordSchema = z.object({
   newPassword: z.string().min(1, 'Password is required'),
 });
 
-export const userSchema = z.object({
+export const updateUserSchema = z.object({
   firstName: z
     .string()
     .trim()
