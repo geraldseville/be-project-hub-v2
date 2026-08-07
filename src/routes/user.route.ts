@@ -5,13 +5,13 @@ import { validateRequest } from '../middlewares/validate.middleware';
 import {
   changeUserPasswordSchema,
   updateUserSchema,
-} from '../validators/users.validator';
+} from '../validators/user.validator';
 import {
   changeMyPassword,
   deleteMyAccount,
   getUsers,
   updateMe,
-} from '../controllers/users.controller';
+} from '../controllers/user.controller';
 
 const router = express.Router();
 

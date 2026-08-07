@@ -2,8 +2,8 @@ import type { Request, Response } from 'express';
 
 import bcrypt from 'bcryptjs';
 
-import { usersRepository } from '../repositories/users.repository';
-import type { ChangeUserPasswordDto, UpdateUserDto } from '../types/users.dto';
+import { usersRepository } from '../repositories/user.repository';
+import type { ChangeUserPasswordDto, UpdateUserDto } from '../types/user.dto';
 
 export const changeMyPassword = async (
   req: Request<{}, {}, ChangeUserPasswordDto>,

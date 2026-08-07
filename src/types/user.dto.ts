@@ -3,7 +3,7 @@ import { z } from 'zod';
 import {
   changeUserPasswordSchema,
   updateUserSchema,
-} from '../validators/users.validator';
+} from '../validators/user.validator';
 
 export type ChangeUserPasswordDto = z.infer<typeof changeUserPasswordSchema>;
 

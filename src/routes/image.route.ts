@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 
-import { uploadProfileImage } from '../controllers/images.controller';
+import { uploadProfileImage } from '../controllers/image.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
 
 const router = express.Router();
