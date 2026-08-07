@@ -25,6 +25,44 @@ model User {
   imageUrl         String?
   timezone         String?
 
+  ownedProjects    Project[] @relation("ProjectOwner")
+  assignedProjects Project[] @relation("ProjectMembers")
+
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+enum ProjectStatus {
+  PLANNING
+  ACTIVE
+  REVIEW
+  COMPLETED
+  ARCHIVE
+}
+
+enum ProjectUrgency {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model Project {
+  id             String @id @default(cuid())
+  title          String
+  description    String? @db.Text
+  status         ProjectStatus @default(PLANNING)
+  urgency        ProjectUrgency @default(MEDIUM)
+  startDate      DateTime?
+  endDate        DateTime?
+  primaryColor   String?
+  secondaryColor String?
+
+  ownerId        String
+  owner          User @relation("ProjectOwner", fields: [ownerId], references: [id])
+
+  assignees      User[] @relation("ProjectMembers")
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
