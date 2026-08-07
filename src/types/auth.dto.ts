@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { loginSchema, registerSchema } from '../validators/auth.validators';
+import { loginSchema, registerSchema } from '../validators/auth.validator';
 
 export type LoginDto = z.infer<typeof loginSchema>;
 
