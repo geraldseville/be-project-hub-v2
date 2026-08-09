@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express';
 
 import { projectRepository } from '../repositories/project.repository';
-
 import type { CreateProjectDto, UpdateProjectDto } from '../types/project.dto';
 
 export const createProject = async (
@@ -101,9 +100,16 @@ export const getProject = async (
 
   const project = await projectRepository.getProjectById(projectId);
 
-  res.status(201).json({
+  if (!project) {
+    return res.status(404).json({
+      status: 'error',
+      message: 'project not found.',
+    });
+  }
+
+  return res.status(201).json({
     status: 'success',
-    message: 'successfully get projects',
+    message: 'successfully get project',
     data: {
       project,
     },
@@ -113,7 +119,7 @@ export const getProject = async (
 export const getProjects = async (_: Request, res: Response) => {
   const projects = await projectRepository.getAllProjects();
 
-  res.status(201).json({
+  return res.status(201).json({
     status: 'success',
     message: 'successfully get projects',
     data: {

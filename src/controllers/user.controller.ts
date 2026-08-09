@@ -8,14 +8,12 @@ import type { ChangeUserPasswordDto, UpdateUserDto } from '../types/user.dto';
 export const changeMyPassword = async (
   req: Request<{}, {}, ChangeUserPasswordDto>,
   res: Response,
-): Promise<void> => {
+): Promise<Response | void> => {
   if (!req.user) {
-    res.status(401).json({
+    return res.status(401).json({
       status: 'error',
       message: 'unauthorized',
     });
-
-    return;
   }
 
   const userId = req.user.id;
@@ -31,7 +29,7 @@ export const changeMyPassword = async (
     updatedAt: new Date(),
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     status: 'success',
     message: 'password changed successfully.',
   });
@@ -69,10 +67,13 @@ export const deleteMyAccount = async (
   });
 };
 
-export const getUsers = async (req: Request, res: Response): Promise<void> => {
+export const getUsers = async (
+  _: Request,
+  res: Response,
+): Promise<Response | void> => {
   const users = await usersRepository.getAllUsers();
 
-  res.status(200).json({
+  return res.status(200).json({
     status: 'success',
     message: 'Successfully fetched all users.',
     data: {
