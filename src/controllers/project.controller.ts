@@ -50,14 +50,6 @@ export const createProject = async (
     },
   });
 
-  // await tasksRepository.createTasks(
-  //   tasks.map((task) => ({
-  //     ...task,
-  //     createdById: userId,
-  //     projectId: project.id,
-  //   })),
-  // );
-
   const newProject = await projectRepository.getProjectById(project.id);
 
   return res.status(201).json({
