@@ -75,9 +75,42 @@ export const getUsers = async (
 
   return res.status(200).json({
     status: 'success',
-    message: 'Successfully fetched all users.',
+    message: 'successfully fetched users.',
     data: {
       users,
+    },
+  });
+};
+
+export const getUser = async (
+  req: Request,
+  res: Response,
+): Promise<Response | void> => {
+  if (!req.user) {
+    return res.status(401).json({
+      status: 'error',
+      message: 'unauthorized',
+    });
+  }
+
+  const userId = req.user.id;
+
+  const user = await usersRepository.findUserById(userId);
+
+  if (!user) {
+    return res.status(404).json({
+      status: 'error',
+      message: 'user not found',
+    });
+  }
+
+  const { password: _, ...safeUser } = user;
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'successfully fetched user.',
+    data: {
+      user: safeUser,
     },
   });
 };
@@ -89,7 +122,7 @@ export const updateMe = async (
   if (!req.user) {
     return res.status(401).json({
       status: 'error',
-      message: 'Unauthorized.',
+      message: 'unauthorized.',
     });
   }
 

@@ -10,6 +10,7 @@ import {
   changeMyPassword,
   deleteMyAccount,
   getUsers,
+  getUser,
   updateMe,
 } from '../controllers/user.controller';
 
@@ -25,6 +26,8 @@ router.patch(
 router.delete('/me', authMiddleware, deleteMyAccount);
 
 router.get('/', authMiddleware, getUsers);
+
+router.get('/:id', authMiddleware, getUser);
 
 router.patch(
   '/me',
