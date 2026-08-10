@@ -24,7 +24,7 @@ router.get('/:id', authMiddleware, getTask);
 
 router.get('/', authMiddleware, getTasks);
 
-router.get(
+router.patch(
   '/:id',
   authMiddleware,
   validateRequest(updateTaskSchema),
