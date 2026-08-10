@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
+import { createTaskSchema } from './task.validator';
+
 export const createProjectSchema = z
   .object({
     title: z.string().trim().min(1, 'Title is required.'),
 
-    description: z.string().trim(),
+    description: z.string().trim().optional(),
 
     status: z
       .enum(['PLANNING', 'ACTIVE', 'REVIEW', 'COMPLETED', 'ARCHIVE'], {
@@ -33,6 +35,8 @@ export const createProjectSchema = z
       .default('#000000'),
 
     memberIds: z.array(z.string().uuid()).default([]),
+
+    tasks: z.array(createTaskSchema).optional().default([]),
   })
   .refine(
     (data) =>
@@ -68,14 +72,16 @@ export const updateProjectSchema = z
     primaryColor: z
       .string()
       .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'Invalid primary color.')
-      .default('#000000'),
+      .optional(),
 
     secondaryColor: z
       .string()
       .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'Invalid secondary color.')
-      .default('#000000'),
+      .optional(),
 
-    memberIds: z.array(z.string().uuid()).default([]),
+    memberIds: z.array(z.string().uuid()).optional(),
+
+    tasks: z.array(createTaskSchema).optional(),
   })
   .refine(
     (data) =>
