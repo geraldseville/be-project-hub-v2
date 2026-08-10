@@ -16,7 +16,11 @@ export const usersRepository = {
   },
 
   getAllUsers() {
-    return prisma.user.findMany();
+    return prisma.user.findMany({
+      omit: {
+        password: true,
+      },
+    });
   },
 
   updateUser(id: string, data: Prisma.UserUpdateInput) {
