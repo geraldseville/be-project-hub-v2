@@ -15,8 +15,18 @@ export const usersRepository = {
     });
   },
 
-  getAllUsers() {
+  getAllUsers({ excludeUserId }: { excludeUserId?: string }) {
     return prisma.user.findMany({
+      where: excludeUserId
+        ? {
+            id: {
+              not: excludeUserId,
+            },
+          }
+        : undefined,
+      include: {
+        memberProjects: true,
+      },
       omit: {
         password: true,
       },

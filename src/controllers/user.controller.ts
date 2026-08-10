@@ -2,8 +2,8 @@ import type { Request, Response } from 'express';
 
 import bcrypt from 'bcryptjs';
 
-import { usersRepository } from '../repositories/user.repository';
 import type { ChangeUserPasswordDto, UpdateUserDto } from '../types/user.dto';
+import { usersRepository } from '../repositories/user.repository';
 
 export const changeMyPassword = async (
   req: Request<{}, {}, ChangeUserPasswordDto>,
@@ -68,10 +68,23 @@ export const deleteMyAccount = async (
 };
 
 export const getUsers = async (
-  _: Request,
+  req: Request,
   res: Response,
 ): Promise<Response | void> => {
-  const users = await usersRepository.getAllUsers();
+  if (!req.user) {
+    return res.status(401).json({
+      status: 'error',
+      message: 'unauthorized.',
+    });
+  }
+
+  const userId = req.user.id;
+
+  const excludeMe = req.query.excludeMe === 'true';
+
+  const users = await usersRepository.getAllUsers({
+    excludeUserId: excludeMe ? userId : undefined,
+  });
 
   return res.status(200).json({
     status: 'success',
