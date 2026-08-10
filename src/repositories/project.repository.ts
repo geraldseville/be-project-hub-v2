@@ -8,9 +8,12 @@ export const projectRepository = {
       data,
       include: {
         owner: true,
-        // assignees: true,
         members: true,
-        // tasks: true,
+        tasks: {
+          include: {
+            assignee: true,
+          },
+        },
       },
     });
   },
@@ -23,9 +26,12 @@ export const projectRepository = {
     return prisma.project.findMany({
       include: {
         owner: true,
-        // assignees: true,
         members: true,
-        // tasks: true,
+        tasks: {
+          include: {
+            assignee: true,
+          },
+        },
       },
     });
   },
@@ -35,9 +41,12 @@ export const projectRepository = {
       where: { id },
       include: {
         owner: true,
-        // assignees: true,
         members: true,
-        // tasks: true,
+        tasks: {
+          include: {
+            assignee: true,
+          },
+        },
       },
     });
   },
@@ -48,9 +57,12 @@ export const projectRepository = {
       data,
       include: {
         owner: true,
-        // assignees: true,
         members: true,
-        // tasks: true,
+        tasks: {
+          include: {
+            assignee: true,
+          },
+        },
       },
     });
   },
