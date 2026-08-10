@@ -22,7 +22,7 @@ export const createTaskSchema = z
 
     endDate: z.coerce.date().optional(),
 
-    projectId: z.string().cuid('Invalid project ID.'),
+    projectId: z.string().uuid('Invalid project ID.'),
 
     assigneeId: z.string().uuid('Invalid assignee ID.').optional(),
   })
@@ -57,7 +57,7 @@ export const updateTaskSchema = z
 
     endDate: z.coerce.date().optional(),
 
-    projectId: z.string().cuid('Invalid project ID.').optional(),
+    projectId: z.string().uuid('Invalid project ID.').optional(),
 
     assigneeId: z.string().uuid('Invalid assignee ID.').optional(),
   })

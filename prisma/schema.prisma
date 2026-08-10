@@ -51,7 +51,7 @@ enum ProjectUrgency {
 }
 
 model Project {
-  id             String @id @default(cuid())
+  id             String @id @default(uuid())
   title          String
   description    String? @db.Text
   status         ProjectStatus @default(PLANNING)
@@ -91,10 +91,8 @@ model Task {
   id               String   @id @default(uuid())
   title            String
   description      String?
-
   status           TaskStatus @default(TODO)
   priority         TaskPriority @default(MEDIUM)
-
   startDate        DateTime?
   endDate          DateTime?
 
