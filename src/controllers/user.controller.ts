@@ -2,7 +2,11 @@ import type { Request, Response } from 'express';
 
 import bcrypt from 'bcryptjs';
 
-import type { ChangeUserPasswordDto, UpdateUserDto } from '../types/user.dto';
+import type {
+  ChangeUserPasswordDto,
+  UpdateUserDto,
+  UpdateUserSavedColorsDto,
+} from '../types/user.dto';
 import { usersRepository } from '../repositories/user.repository';
 
 export const changeMyPassword = async (
@@ -170,6 +174,32 @@ export const updateMe = async (
     message: 'user updated successfully.',
     data: {
       user: safeUser,
+    },
+  });
+};
+
+export const updateMySavedColors = async (
+  req: Request<{}, {}, UpdateUserSavedColorsDto>,
+  res: Response,
+): Promise<Response | void> => {
+  if (!req.user) {
+    return res.status(401).json({
+      status: 'error',
+      message: 'unauthorized.',
+    });
+  }
+
+  const userId = req.user.id;
+
+  const colors = req.body.savedColors;
+
+  const user = await usersRepository.updateUserSavedColors(userId, colors);
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'saved colors successfully updated.',
+    data: {
+      user,
     },
   });
 };

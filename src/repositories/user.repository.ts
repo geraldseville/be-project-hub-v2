@@ -39,4 +39,18 @@ export const usersRepository = {
       data,
     });
   },
+
+  updateUserSavedColors(userId: string, savedColors: string[]) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        savedColors,
+      },
+      omit: {
+        password: true,
+      },
+    });
+  },
 };

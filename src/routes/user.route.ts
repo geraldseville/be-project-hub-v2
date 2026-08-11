@@ -4,6 +4,7 @@ import { authMiddleware } from '../middlewares/auth.middleware';
 import { validateRequest } from '../middlewares/validate.middleware';
 import {
   changeUserPasswordSchema,
+  updateUserSavedColorsSchema,
   updateUserSchema,
 } from '../validators/user.validator';
 import {
@@ -12,6 +13,7 @@ import {
   getUsers,
   getUser,
   updateMe,
+  updateMySavedColors,
 } from '../controllers/user.controller';
 
 const router = express.Router();
@@ -34,6 +36,13 @@ router.patch(
   authMiddleware,
   validateRequest(updateUserSchema),
   updateMe,
+);
+
+router.patch(
+  '/me/saved-colors',
+  authMiddleware,
+  validateRequest(updateUserSavedColorsSchema),
+  updateMySavedColors,
 );
 
 export default router;

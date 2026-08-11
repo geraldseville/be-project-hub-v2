@@ -38,4 +38,22 @@ export const updateUserSchema = z.object({
       message: 'Invalid timezone.',
     })
     .optional(),
+
+  savedColors: z
+    .array(
+      z
+        .string()
+        .regex(/^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/, 'Invalid HEX color.'),
+    )
+    .optional(),
+});
+
+export const updateUserSavedColorsSchema = z.object({
+  savedColors: z
+    .array(
+      z
+        .string()
+        .regex(/^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/, 'Invalid HEX color.'),
+    )
+    .max(50, 'You can save up to 50 colors.'),
 });
