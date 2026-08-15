@@ -13,7 +13,7 @@ export const createTaskSchema = z
       .default('TODO'),
 
     priority: z
-      .enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT'], {
+      .enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], {
         error: 'Invalid task priority.',
       })
       .default('MEDIUM'),
@@ -48,7 +48,7 @@ export const updateTaskSchema = z
       .optional(),
 
     priority: z
-      .enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT'], {
+      .enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], {
         error: 'Invalid task priority.',
       })
       .optional(),
