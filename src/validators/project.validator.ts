@@ -14,9 +14,9 @@ export const createProjectSchema = z
       })
       .default('PLANNING'),
 
-    urgency: z
+    priority: z
       .enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], {
-        error: 'Invalid project urgency.',
+        error: 'Invalid project priority.',
       })
       .default('LOW'),
 
@@ -59,9 +59,9 @@ export const updateProjectSchema = z
       })
       .optional(),
 
-    urgency: z
+    priority: z
       .enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], {
-        error: 'Invalid project urgency.',
+        error: 'Invalid project priority.',
       })
       .optional(),
 
