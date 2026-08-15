@@ -12,6 +12,32 @@ export const usersRepository = {
   findUserById(id: string) {
     return prisma.user.findUnique({
       where: { id },
+      include: {
+        ownedProjects: {
+          include: {
+            members: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                imageUrl: true,
+              },
+            },
+          },
+        },
+        memberProjects: {
+          include: {
+            members: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                imageUrl: true,
+              },
+            },
+          },
+        },
+      },
     });
   },
 
