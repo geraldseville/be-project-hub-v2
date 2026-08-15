@@ -89,7 +89,7 @@ enum TaskPriority {
   LOW
   MEDIUM
   HIGH
-  URGENT
+  CRITICAL
 }
 
 model Task {
