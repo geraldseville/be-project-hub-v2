@@ -48,7 +48,7 @@ enum ProjectStatus {
   ARCHIVE
 }
 
-enum ProjectUrgency {
+enum ProjectPriority {
   LOW
   MEDIUM
   HIGH
@@ -60,7 +60,7 @@ model Project {
   title          String
   description    String? @db.Text
   status         ProjectStatus @default(PLANNING)
-  urgency        ProjectUrgency @default(MEDIUM)
+  priority       ProjectPriority @default(MEDIUM)
   startDate      DateTime?
   endDate        DateTime?
   primaryColor   String?
