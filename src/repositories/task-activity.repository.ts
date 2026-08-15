@@ -54,8 +54,11 @@ export const taskActivityRepository = {
         },
         include: {
           actor: {
-            omit: {
-              password: true,
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              imageUrl: true,
             },
           },
         },
