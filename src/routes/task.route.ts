@@ -10,6 +10,7 @@ import {
   createTask,
   deleteTask,
   getTask,
+  getTaskActivities,
   getTasks,
   updateTask,
 } from '../controllers/task.controller';
@@ -18,14 +19,16 @@ const router = express.Router();
 
 router.post('/', authMiddleware, validateRequest(createTaskSchema), createTask);
 
-router.delete('/:id', authMiddleware, deleteTask);
+router.delete('/:taskId', authMiddleware, deleteTask);
 
-router.get('/:id', authMiddleware, getTask);
+router.get('/:taskId', authMiddleware, getTask);
+
+router.get('/:taskId/activities', authMiddleware, getTaskActivities);
 
 router.get('/', authMiddleware, getTasks);
 
 router.patch(
-  '/:id',
+  '/:taskId',
   authMiddleware,
   validateRequest(updateTaskSchema),
   updateTask,
