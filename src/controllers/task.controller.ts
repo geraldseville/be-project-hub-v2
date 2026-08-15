@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 
 import type { CreateTaskDto, UpdateTaskDto } from '../types/task.dto';
 import type { TaskActivityType } from '@prisma/client';
+import { prisma } from '../lib/prisma';
 import { taskRepository } from '../repositories/task.repository';
 import { taskActivityRepository } from '../repositories/task-activity.repository';
 
@@ -71,6 +72,95 @@ export const createTask = async (
   });
 };
 
+export const createTaskComment = async (
+  req: Request<{ taskId: string }>,
+  res: Response,
+): Promise<Response | void> => {
+  try {
+    const { taskId } = req.params;
+
+    const { content } = req.body;
+
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        status: 'error',
+        message: 'unauthorized.',
+      });
+    }
+
+    if (!taskId) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'taskId is required.',
+      });
+    }
+
+    if (typeof content !== 'string' || !content.trim()) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'comment content is required.',
+      });
+    }
+
+    const taskExists = await taskRepository.getTaskById(taskId);
+
+    if (!taskExists) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'task not found.',
+      });
+    }
+
+    const comment = await prisma.$transaction(async (tx) => {
+      const createdComment = await tx.taskComment.create({
+        data: {
+          content: content.trim(),
+          taskId: taskExists.id,
+          authorId: userId,
+        },
+        include: {
+          author: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              imageUrl: true,
+            },
+          },
+        },
+      });
+
+      await taskActivityRepository.createTaskActivity({
+        taskId: taskExists.id,
+        actorId: userId,
+        type: 'COMMENT_ADDED',
+        metadata: {
+          commentId: createdComment.id,
+        },
+      });
+
+      return createdComment;
+    });
+
+    return res.status(201).json({
+      status: 'success',
+      message: 'comment created successfully.',
+      data: {
+        comment,
+      },
+    });
+  } catch (error) {
+    console.error('create task comment error:', error);
+
+    return res.status(500).json({
+      status: 'error',
+      message: 'failed to create comment.',
+    });
+  }
+};
+
 export const deleteTask = async (
   req: Request<{ taskId: string }>,
   res: Response,
@@ -119,7 +209,7 @@ export const getTask = async (
 };
 
 export const getTasks = async (_: Request, res: Response) => {
-  const tasks = await taskRepository.getAllTasks();
+  const tasks = await taskRepository.getTasks();
 
   return res.status(201).json({
     status: 'success',
