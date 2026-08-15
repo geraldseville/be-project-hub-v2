@@ -34,7 +34,7 @@ export const createProjectSchema = z
       .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'Invalid secondary color.')
       .default('#000000'),
 
-    memberIds: z.array(z.string().uuid()).default([]),
+    memberIds: z.array(z.string().cuid()).default([]),
 
     tasks: z.array(createTaskSchema).optional().default([]),
   })
@@ -79,7 +79,7 @@ export const updateProjectSchema = z
       .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'Invalid secondary color.')
       .optional(),
 
-    memberIds: z.array(z.string().uuid()).optional(),
+    memberIds: z.array(z.string().cuid()).optional(),
 
     tasks: z.array(createTaskSchema).optional(),
   })
