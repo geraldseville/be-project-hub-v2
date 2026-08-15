@@ -8,6 +8,7 @@ import {
 } from '../validators/task.validator';
 import {
   createTask,
+  createTaskComment,
   deleteTask,
   getTask,
   getTaskActivities,
@@ -18,6 +19,8 @@ import {
 const router = express.Router();
 
 router.post('/', authMiddleware, validateRequest(createTaskSchema), createTask);
+
+router.post('/:taskId/comments', authMiddleware, createTaskComment);
 
 router.delete('/:taskId', authMiddleware, deleteTask);
 
