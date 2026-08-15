@@ -1,4 +1,4 @@
-import { type Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 
 import { prisma } from '../lib/prisma';
 
@@ -15,8 +15,38 @@ export const taskRepository = {
     });
   },
 
-  getAllTasks() {
+  getTasks() {
     return prisma.task.findMany();
+  },
+
+  async getTasksPaginated({
+    page = 1,
+    limit = 20,
+  }: {
+    page: number;
+    limit: number;
+  }) {
+    const skip = (page - 1) * limit;
+
+    const [tasks, total] = await Promise.all([
+      prisma.task.findMany({
+        skip,
+        take: limit,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+
+      prisma.task.count(),
+    ]);
+
+    return {
+      tasks,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   },
 
   getTaskById(id: string) {
