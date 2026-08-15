@@ -31,6 +31,9 @@ model User {
   createdTasks     Task[] @relation("TaskCreator")
   assignedTasks    Task[] @relation("TaskAssignee")
 
+  taskComments     TaskComment[]
+  taskActivities   TaskActivity[]
+
   savedColors      String[] @default([])
 
   createdAt        DateTime @default(now())
@@ -107,6 +110,54 @@ model Task {
   assigneeId       String?
   assignee         User? @relation("TaskAssignee", fields: [assigneeId], references: [id])
 
+  comments         TaskComment[]
+  activities       TaskActivity[]
+
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+model TaskComment {
+  id          String @id @default(cuid())
+
+  content     String
+
+  taskId      String
+  authorId    String
+
+  task        Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  author      User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum TaskActivityType {
+  CREATED
+  UPDATED
+  STATUS_CHANGED
+  PRIORITY_CHANGED
+  ASSIGNEE_CHANGED
+  START_DATE_CHANGED
+  END_DATE_CHANGED
+  DESCRIPTION_CHANGED
+  COMMENT_ADDED
+  ATTACHMENT_ADDED
+  ATTACHMENT_REMOVED
+}
+
+model TaskActivity {
+  id        String @id @default(cuid())
+
+  taskId    String
+  actorId   String
+
+  type      TaskActivityType
+
+  metadata  Json?
+
+  task      Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  actor     User @relation(fields: [actorId], references: [id])
+
+  createdAt DateTime @default(now())
 }
