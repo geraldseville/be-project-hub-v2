@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "TaskActivityType" ADD VALUE 'PRIMARY_COLOR_CHANGED';

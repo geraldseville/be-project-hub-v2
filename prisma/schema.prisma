@@ -100,6 +100,7 @@ model Task {
   priority         TaskPriority @default(MEDIUM)
   startDate        DateTime?
   endDate          DateTime?
+  primaryColor     String?
 
   projectId        String
   project          Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -141,6 +142,7 @@ enum TaskActivityType {
   PRIORITY_CHANGED
   START_DATE_CHANGED
   END_DATE_CHANGED
+  PRIMARY_COLOR_CHANGED
   ASSIGNEE_CHANGED
   COMMENT_ADDED
   ATTACHMENT_ADDED
