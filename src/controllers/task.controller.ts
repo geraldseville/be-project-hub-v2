@@ -26,6 +26,7 @@ export const createTask = async (
     priority,
     startDate,
     endDate,
+    primaryColor,
     projectId,
     assigneeId,
   } = req.body;
@@ -37,6 +38,7 @@ export const createTask = async (
     priority,
     startDate,
     endDate,
+    primaryColor,
 
     project: {
       connect: {
@@ -50,11 +52,13 @@ export const createTask = async (
       },
     },
 
-    assignee: {
-      connect: {
-        id: assigneeId,
-      },
-    },
+    assignee: assigneeId
+      ? {
+          connect: {
+            id: assigneeId,
+          },
+        }
+      : undefined,
   });
 
   await taskActivityRepository.createTaskActivity({
@@ -263,7 +267,6 @@ export const updateTask = async (
   }
 
   const { taskId } = req.params;
-
   const userId = req.user.id;
 
   const {
@@ -273,6 +276,7 @@ export const updateTask = async (
     priority,
     startDate,
     endDate,
+    primaryColor,
     assigneeId,
   } = req.body;
 
@@ -286,7 +290,6 @@ export const updateTask = async (
   }
 
   const newStartDate = startDate !== undefined ? startDate : task.startDate;
-
   const newEndDate = endDate !== undefined ? endDate : task.endDate;
 
   if (newStartDate && newEndDate && newStartDate > newEndDate) {
@@ -303,6 +306,7 @@ export const updateTask = async (
     ...(priority !== undefined && { priority }),
     ...(startDate !== undefined && { startDate }),
     ...(endDate !== undefined && { endDate }),
+    ...(primaryColor !== undefined && { primaryColor }),
     ...(assigneeId !== undefined && { assigneeId }),
     updatedAt: new Date(),
   };
@@ -351,23 +355,33 @@ export const updateTask = async (
 
   if (
     startDate !== undefined &&
-    startDate.getTime() !== task.startDate?.getTime()
+    startDate?.getTime() !== task.startDate?.getTime()
   ) {
     changes.push({
       type: 'START_DATE_CHANGED',
       metadata: {
         from: task.startDate?.toISOString() ?? null,
-        to: startDate.toISOString(),
+        to: startDate?.toISOString() ?? null,
       },
     });
   }
 
-  if (endDate !== undefined && endDate.getTime() !== task.endDate?.getTime()) {
+  if (endDate !== undefined && endDate?.getTime() !== task.endDate?.getTime()) {
     changes.push({
       type: 'END_DATE_CHANGED',
       metadata: {
         from: task.endDate?.toISOString() ?? null,
-        to: endDate.toISOString(),
+        to: endDate?.toISOString() ?? null,
+      },
+    });
+  }
+
+  if (primaryColor !== undefined && primaryColor !== task.primaryColor) {
+    changes.push({
+      type: 'PRIMARY_COLOR_CHANGED',
+      metadata: {
+        from: task.primaryColor,
+        to: primaryColor,
       },
     });
   }
