@@ -18,9 +18,21 @@ export const createTaskSchema = z
       })
       .default('MEDIUM'),
 
-    startDate: z.coerce.date().optional(),
+    startDate: z.preprocess((value) => {
+      if (value === '') {
+        return undefined;
+      }
 
-    endDate: z.coerce.date().optional(),
+      return value;
+    }, z.coerce.date().optional()),
+
+    endDate: z.preprocess((value) => {
+      if (value === '') {
+        return undefined;
+      }
+
+      return value;
+    }, z.coerce.date().optional()),
 
     projectId: z.string().cuid('Invalid project ID.'),
 
