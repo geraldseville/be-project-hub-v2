@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-import { isValidTimezone } from '../utils/dateTime.utils';
-
 export const loginSchema = z.object({
   email: z
     .string()
@@ -21,12 +19,4 @@ export const registerSchema = z.object({
   firstName: z.string(),
 
   lastName: z.string(),
-
-  timezone: z
-    .string()
-    .trim()
-    .refine(isValidTimezone, {
-      message: 'Invalid timezone.',
-    })
-    .optional(),
 });
