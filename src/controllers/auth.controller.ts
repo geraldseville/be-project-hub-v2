@@ -85,7 +85,7 @@ export const register = async (
   req: Request<{}, {}, RegisterDto>,
   res: Response,
 ): Promise<Response | void> => {
-  const { firstName, lastName, email, password, timezone } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   const userExists = await authRepository.findUserByEmail(email);
 
@@ -103,7 +103,6 @@ export const register = async (
     password: hashedPassword,
     firstName,
     lastName,
-    timezone,
   });
 
   generateToken(user.id, res);
