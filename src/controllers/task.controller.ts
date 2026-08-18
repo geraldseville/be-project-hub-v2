@@ -142,6 +142,7 @@ export const createTaskComment = async (
         type: 'COMMENT_ADDED',
         metadata: {
           commentId: createdComment.id,
+          comment: createdComment,
         },
       });
 
