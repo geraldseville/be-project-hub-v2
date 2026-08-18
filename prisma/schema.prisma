@@ -14,6 +14,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TimeFormat {
+  H12
+  H24
+}
+
 model User {
   id               String @id @default(cuid())
   email            String @unique
@@ -23,7 +28,9 @@ model User {
   role             String?
   bio              String?
   imageUrl         String?
+
   timezone         String?
+  timeFormat       TimeFormat @default(H12)
 
   ownedProjects    Project[] @relation("ProjectOwner")
   memberProjects   Project[] @relation("ProjectMembers")
