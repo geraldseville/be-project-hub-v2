@@ -145,7 +145,8 @@ export const updateMe = async (
 
   const userId = req.user.id;
 
-  const { firstName, lastName, role, bio, imageUrl, timezone } = req.body;
+  const { firstName, lastName, role, bio, imageUrl, timezone, timeFormat } =
+    req.body;
 
   const user = await usersRepository.findUserById(userId);
 
@@ -163,6 +164,7 @@ export const updateMe = async (
     ...(role !== undefined && { role }),
     ...(imageUrl !== undefined && { imageUrl }),
     ...(timezone !== undefined && { timezone }),
+    ...(timeFormat !== undefined && { timeFormat }),
   };
 
   const updatedUser = await usersRepository.updateUser(userId, updateData);
