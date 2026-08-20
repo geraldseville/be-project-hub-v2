@@ -15,41 +15,81 @@ export const taskRepository = {
     });
   },
 
-  getTasks() {
-    return prisma.task.findMany({
-      include: {
-        assignee: true,
-      },
-    });
-  },
-
-  async getTasksPaginated({
-    page = 1,
-    limit = 20,
-  }: {
-    page: number;
-    limit: number;
-  }) {
+  async getTasks({ page = 1, limit = 20 }: { page?: number; limit?: number }) {
     const skip = (page - 1) * limit;
 
-    const [tasks, total] = await Promise.all([
+    const [tasks, total] = await prisma.$transaction([
       prisma.task.findMany({
         skip,
         take: limit,
-        orderBy: {
-          createdAt: 'desc',
+        include: {
+          assignee: true,
         },
       }),
 
       prisma.task.count(),
     ]);
 
+    const totalPages = Math.ceil(total / limit);
+
     return {
       tasks,
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
+    };
+  },
+
+  async getTasksByProjectId({
+    projectId,
+    page = 1,
+    limit = 20,
+  }: {
+    projectId: string;
+    page?: number;
+    limit?: number;
+  }) {
+    const skip = (page - 1) * limit;
+
+    const where = {
+      projectId,
+    };
+
+    const [tasks, total] = await prisma.$transaction([
+      prisma.task.findMany({
+        where,
+        skip,
+        take: limit,
+        include: {
+          assignee: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+
+      prisma.task.count({
+        where,
+      }),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      tasks,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
     };
   },
 
