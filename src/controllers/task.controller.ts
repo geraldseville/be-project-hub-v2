@@ -213,14 +213,50 @@ export const getTask = async (
   });
 };
 
-export const getTasks = async (_: Request, res: Response) => {
-  const tasks = await taskRepository.getTasks();
+export const getTasks = async (req: Request, res: Response) => {
+  const page = Number(req.query.page ?? 1);
+  const limit = Number(req.query.limit ?? 20);
+
+  const { tasks, pagination } = await taskRepository.getTasks({ page, limit });
 
   return res.status(201).json({
     status: 'success',
     message: 'tasks get successfully.',
     data: {
       tasks,
+      pagination,
+    },
+  });
+};
+
+export const getTasksByProjectId = async (
+  req: Request<{ projectId: string }>,
+  res: Response,
+): Promise<Response> => {
+  const { projectId } = req.params;
+
+  const pageParam = Number(req.query.page ?? 1);
+  const limitParam = Number(req.query.limit ?? 20);
+
+  const page = Number.isInteger(pageParam) && pageParam > 0 ? pageParam : 1;
+
+  const limit =
+    Number.isInteger(limitParam) && limitParam > 0
+      ? Math.min(limitParam, 100)
+      : 20;
+
+  const { tasks, pagination } = await taskRepository.getTasksByProjectId({
+    projectId,
+    page,
+    limit,
+  });
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'successfully fetched project tasks.',
+    data: {
+      tasks,
+      pagination,
     },
   });
 };
