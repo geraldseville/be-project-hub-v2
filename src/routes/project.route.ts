@@ -13,6 +13,7 @@ import {
   getProjects,
   updateProject,
 } from '../controllers/project.controller';
+import { getTasksByProjectId } from '../controllers/task.controller';
 
 const router = express.Router();
 
@@ -26,6 +27,8 @@ router.post(
 router.delete('/:id', authMiddleware, deleteProject);
 
 router.get('/:id', authMiddleware, getProject);
+
+router.get('/:id/tasks', authMiddleware, getTasksByProjectId);
 
 router.get('/', authMiddleware, getProjects);
 
