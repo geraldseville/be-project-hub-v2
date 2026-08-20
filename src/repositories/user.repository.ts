@@ -43,22 +43,42 @@ export const usersRepository = {
     });
   },
 
-  getAllUsers({ excludeUserId }: { excludeUserId?: string }) {
-    return prisma.user.findMany({
-      where: excludeUserId
-        ? {
-            id: {
-              not: excludeUserId,
-            },
-          }
-        : undefined,
-      include: {
-        memberProjects: true,
-      },
-      omit: {
-        password: true,
-      },
-    });
+  getUsers({
+    excludeUserId,
+    page = 1,
+    limit = 20,
+  }: {
+    excludeUserId?: string;
+    page?: number;
+    limit?: number;
+  }) {
+    const skip = (page - 1) * limit;
+
+    const where = excludeUserId
+      ? {
+          id: {
+            not: excludeUserId,
+          },
+        }
+      : undefined;
+
+    return prisma.$transaction([
+      prisma.user.findMany({
+        where,
+        skip,
+        take: limit,
+        include: {
+          memberProjects: true,
+        },
+        omit: {
+          password: true,
+        },
+      }),
+
+      prisma.user.count({
+        where,
+      }),
+    ]);
   },
 
   updateUser(id: string, data: Prisma.UserUpdateInput) {
