@@ -43,7 +43,7 @@ export const usersRepository = {
     });
   },
 
-  getUsers({
+  async getUsers({
     excludeUserId,
     page = 1,
     limit = 20,
@@ -62,7 +62,7 @@ export const usersRepository = {
         }
       : undefined;
 
-    return prisma.$transaction([
+    const [users, total] = await prisma.$transaction([
       prisma.user.findMany({
         where,
         skip,
@@ -79,6 +79,20 @@ export const usersRepository = {
         where,
       }),
     ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      users,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
+    };
   },
 
   updateUser(id: string, data: Prisma.UserUpdateInput) {

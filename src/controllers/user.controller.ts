@@ -83,11 +83,9 @@ export const getUsers = async (
   }
 
   const userId = req.user.id;
-
   const excludeMe = req.query.excludeMe === 'true';
 
   const pageParam = Number(req.query.page ?? 1);
-
   const limitParam = Number(req.query.limit ?? 20);
 
   const page = Number.isInteger(pageParam) && pageParam > 0 ? pageParam : 1;
@@ -97,27 +95,18 @@ export const getUsers = async (
       ? Math.min(limitParam, 100)
       : 20;
 
-  const [users, total] = await usersRepository.getUsers({
+  const { users, pagination } = await usersRepository.getUsers({
     excludeUserId: excludeMe ? userId : undefined,
     page,
     limit,
   });
-
-  const totalPages = Math.ceil(total / limit);
 
   return res.status(200).json({
     status: 'success',
     message: 'successfully fetched users.',
     data: {
       users,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages,
-        hasNextPage: page < totalPages,
-        hasPreviousPage: page > 1,
-      },
+      pagination,
     },
   });
 };
