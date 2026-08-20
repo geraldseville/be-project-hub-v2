@@ -235,7 +235,7 @@ export const getTaskActivities = async (
 
   const limit = Number(req.query.limit ?? 20);
 
-  const result = await taskActivityRepository.getTaskActivities({
+  const taskActivities = await taskActivityRepository.getTaskActivities({
     taskId,
     page,
     limit,
@@ -244,7 +244,7 @@ export const getTaskActivities = async (
   return res.status(200).json({
     status: 'success',
     message: 'task activities retrieved successfully.',
-    data: result,
+    data: taskActivities,
   });
 };
 
