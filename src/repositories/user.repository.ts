@@ -15,6 +15,7 @@ export const usersRepository = {
       include: {
         ownedProjects: {
           include: {
+            tasks: true,
             members: {
               select: {
                 id: true,
@@ -27,6 +28,7 @@ export const usersRepository = {
         },
         memberProjects: {
           include: {
+            tasks: true,
             members: {
               select: {
                 id: true,

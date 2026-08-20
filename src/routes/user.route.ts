@@ -29,7 +29,7 @@ router.delete('/me', authMiddleware, deleteMyAccount);
 
 router.get('/', authMiddleware, getUsers);
 
-router.get('/:id', authMiddleware, getUser);
+router.get('/:userId', authMiddleware, getUser);
 
 router.patch(
   '/me',

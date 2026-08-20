@@ -100,7 +100,7 @@ export const getUsers = async (
 };
 
 export const getUser = async (
-  req: Request<{ id: string }>,
+  req: Request<{ userId: string }>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -110,7 +110,7 @@ export const getUser = async (
     });
   }
 
-  const userId = req.params.id;
+  const { userId } = req.params;
 
   const user = await usersRepository.findUserById(userId);
 
