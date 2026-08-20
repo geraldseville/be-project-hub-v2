@@ -47,11 +47,13 @@ export const taskActivityRepository = {
   }: GetTaskActivitiesInput) {
     const skip = (page - 1) * limit;
 
-    const [activities, total] = await Promise.all([
+    const where = {
+      taskId,
+    };
+
+    const [taskActivities, total] = await prisma.$transaction([
       prisma.taskActivity.findMany({
-        where: {
-          taskId,
-        },
+        where,
         include: {
           actor: {
             select: {
@@ -62,26 +64,35 @@ export const taskActivityRepository = {
             },
           },
         },
-        orderBy: {
-          createdAt: 'desc',
-        },
+        orderBy: [
+          {
+            createdAt: 'desc',
+          },
+          {
+            id: 'desc',
+          },
+        ],
         skip,
         take: limit,
       }),
 
       prisma.taskActivity.count({
-        where: {
-          taskId,
-        },
+        where,
       }),
     ]);
 
+    const totalPages = Math.ceil(total / limit);
+
     return {
-      activities,
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
+      taskActivities,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
     };
   },
 };

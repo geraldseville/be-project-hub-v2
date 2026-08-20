@@ -232,19 +232,22 @@ export const getTaskActivities = async (
   const { taskId } = req.params;
 
   const page = Number(req.query.page ?? 1);
-
   const limit = Number(req.query.limit ?? 20);
 
-  const taskActivities = await taskActivityRepository.getTaskActivities({
-    taskId,
-    page,
-    limit,
-  });
+  const { taskActivities, pagination } =
+    await taskActivityRepository.getTaskActivities({
+      taskId,
+      page,
+      limit,
+    });
 
   return res.status(200).json({
     status: 'success',
     message: 'task activities retrieved successfully.',
-    data: taskActivities,
+    data: {
+      taskActivities,
+      pagination,
+    },
   });
 };
 
