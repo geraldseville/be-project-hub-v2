@@ -32,6 +32,8 @@ model User {
   timezone         String?
   timeFormat       TimeFormat @default(H12)
 
+  savedColors      String[] @default([])
+
   ownedProjects    Project[] @relation("ProjectOwner")
   memberProjects   Project[] @relation("ProjectMembers")
 
@@ -40,8 +42,6 @@ model User {
 
   taskComments     TaskComment[]
   taskActivities   TaskActivity[]
-
-  savedColors      String[] @default([])
 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -68,8 +68,8 @@ model Project {
   description    String? @db.Text
   status         ProjectStatus @default(PLANNING)
   priority       ProjectPriority @default(MEDIUM)
-  startDate      DateTime?
-  endDate        DateTime?
+  startDate      DateTime
+  endDate        DateTime
   primaryColor   String?
   secondaryColor String?
 
