@@ -16,7 +16,11 @@ export const taskRepository = {
   },
 
   getTasks() {
-    return prisma.task.findMany();
+    return prisma.task.findMany({
+      include: {
+        assignee: true,
+      },
+    });
   },
 
   async getTasksPaginated({
