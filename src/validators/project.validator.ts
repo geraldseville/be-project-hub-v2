@@ -6,7 +6,7 @@ export const createProjectSchema = z
   .object({
     title: z.string().trim().min(1, 'Title is required.'),
 
-    description: z.string().trim().optional(),
+    description: z.string().trim().nullable().optional(),
 
     status: z
       .enum(['PLANNING', 'ACTIVE', 'REVIEW', 'COMPLETED', 'ARCHIVE'], {
@@ -20,9 +20,9 @@ export const createProjectSchema = z
       })
       .default('LOW'),
 
-    startDate: z.coerce.date().optional(),
+    startDate: z.coerce.date(),
 
-    endDate: z.coerce.date().optional(),
+    endDate: z.coerce.date(),
 
     primaryColor: z
       .string()
@@ -38,14 +38,10 @@ export const createProjectSchema = z
 
     tasks: z.array(createTaskSchema).optional().default([]),
   })
-  .refine(
-    (data) =>
-      !data.startDate || !data.endDate || data.endDate >= data.startDate,
-    {
-      message: 'End date must be after start date.',
-      path: ['endDate'],
-    },
-  );
+  .refine((data) => data.endDate >= data.startDate, {
+    message: 'End date must be after start date.',
+    path: ['endDate'],
+  });
 
 export const updateProjectSchema = z
   .object({
