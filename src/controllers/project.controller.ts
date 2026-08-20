@@ -62,10 +62,10 @@ export const createProject = async (
 };
 
 export const deleteProject = async (
-  req: Request<{ id: string }>,
+  req: Request<{ projectId: string }>,
   res: Response,
 ): Promise<Response | void> => {
-  const projectId = req.params.id;
+  const { projectId } = req.params;
 
   const project = await projectRepository.getProjectById(projectId);
 
@@ -85,10 +85,10 @@ export const deleteProject = async (
 };
 
 export const getProject = async (
-  req: Request<{ id: string }>,
+  req: Request<{ projectId: string }>,
   res: Response,
 ): Promise<Response | void> => {
-  const projectId = req.params.id;
+  const { projectId } = req.params;
 
   const project = await projectRepository.getProjectById(projectId);
 
@@ -121,10 +121,10 @@ export const getProjects = async (_: Request, res: Response) => {
 };
 
 export const updateProject = async (
-  req: Request<{ id: string }, {}, UpdateProjectDto>,
+  req: Request<{ projectId: string }, {}, UpdateProjectDto>,
   res: Response,
 ): Promise<Response | void> => {
-  const projectId = req.params.id;
+  const { projectId } = req.params;
 
   const {
     title,

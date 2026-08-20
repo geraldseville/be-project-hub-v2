@@ -24,16 +24,16 @@ router.post(
   createProject,
 );
 
-router.delete('/:id', authMiddleware, deleteProject);
+router.delete('/:projectId', authMiddleware, deleteProject);
 
-router.get('/:id', authMiddleware, getProject);
+router.get('/:projectId', authMiddleware, getProject);
 
-router.get('/:id/tasks', authMiddleware, getTasksByProjectId);
+router.get('/:projectId/tasks', authMiddleware, getTasksByProjectId);
 
 router.get('/', authMiddleware, getProjects);
 
 router.patch(
-  '/:id',
+  '/:projectId',
   authMiddleware,
   validateRequest(updateProjectSchema),
   updateProject,
