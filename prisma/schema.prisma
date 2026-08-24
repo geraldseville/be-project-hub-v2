@@ -43,8 +43,8 @@ model User {
   taskComments          TaskComment[]
   taskActivities        TaskActivity[]
 
-  notifications         Notifications[] @relation("NotificationRecipient")
-  sentNotifications     Notifications[] @relation("NotificationActor")
+  notifications         Notification[] @relation("NotificationRecipient")
+  sentNotifications     Notification[] @relation("NotificationActor")
 
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
@@ -180,6 +180,7 @@ model TaskActivity {
 
 enum NotificationType {
   PROJECT_MEMBER_ADDED
+  PROJECT_MEMBER_REMOVED
   PROJECT_UPDATED
   PROJECT_DELETED
 
@@ -195,7 +196,7 @@ enum NotificationEntityType {
   TASK_COMMENT
 }
 
-model Notifications {
+model Notification {
   id                String @id @default(cuid())
 
   recipientId       String
