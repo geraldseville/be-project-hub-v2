@@ -5,6 +5,7 @@ import type { TaskActivityType } from '@prisma/client';
 import { prisma } from '../lib/prisma';
 import { taskRepository } from '../repositories/task.repository';
 import { taskActivityRepository } from '../repositories/task-activity.repository';
+import { notificationService } from '../services/notification.service';
 
 export const createTask = async (
   req: Request<{}, {}, CreateTaskDto>,
@@ -66,6 +67,23 @@ export const createTask = async (
     actorId: userId,
     type: 'CREATED',
   });
+
+  // Notify the assignee
+  if (assigneeId && assigneeId !== userId) {
+    await notificationService.createNotification({
+      recipientId: assigneeId,
+      actorId: userId,
+      type: 'TASK_ASSIGNED',
+      entityType: 'TASK',
+      entityId: task.id,
+      title: 'Task assigned to you',
+      message: `You have been assigned to the task "${task.title}".`,
+      metadata: {
+        projectId,
+        taskId: task.id,
+      },
+    });
+  }
 
   return res.status(201).json({
     status: 'success',
@@ -170,7 +188,15 @@ export const deleteTask = async (
   req: Request<{ taskId: string }>,
   res: Response,
 ): Promise<Response | void> => {
+  if (!req.user) {
+    return res.status(401).json({
+      status: 'error',
+      message: 'unauthorized.',
+    });
+  }
+
   const { taskId } = req.params;
+  const userId = req.user.id;
 
   const task = await taskRepository.getTaskById(taskId);
 
@@ -182,6 +208,23 @@ export const deleteTask = async (
   }
 
   await taskRepository.deleteTaskById(taskId);
+
+  // Notify the assignee before the task data is no longer available.
+  if (task.assigneeId && task.assigneeId !== userId) {
+    await notificationService.createNotification({
+      recipientId: task.assigneeId,
+      actorId: userId,
+      type: 'TASK_DELETED',
+      entityType: 'TASK',
+      entityId: taskId,
+      title: 'Task deleted',
+      message: `The task "${task.title}" assigned to you was deleted.`,
+      metadata: {
+        taskId,
+        projectId: task.projectId,
+      },
+    });
+  }
 
   return res.status(200).json({
     status: 'success',
@@ -458,6 +501,59 @@ export const updateTask = async (
       }),
     ),
   );
+
+  // New assignee
+  if (
+    assigneeId !== undefined &&
+    assigneeId !== task.assigneeId &&
+    assigneeId !== null &&
+    assigneeId !== userId
+  ) {
+    await notificationService.createNotification({
+      recipientId: assigneeId,
+      actorId: userId,
+      type: 'TASK_ASSIGNED',
+      entityType: 'TASK',
+      entityId: taskId,
+      title: 'Task assigned to you',
+      message: `You have been assigned to the task "${updatedTask.title}".`,
+      metadata: {
+        taskId,
+        projectId: updatedTask.projectId,
+      },
+    });
+  }
+
+  // Task details changed
+  const hasTaskChanges = changes.some(
+    (change) => change.type !== 'ASSIGNEE_CHANGED',
+  );
+
+  if (
+    hasTaskChanges &&
+    updatedTask.assigneeId &&
+    updatedTask.assigneeId !== userId
+  ) {
+    await notificationService.createNotification({
+      recipientId: updatedTask.assigneeId,
+      actorId: userId,
+      type: 'TASK_UPDATED',
+      entityType: 'TASK',
+      entityId: taskId,
+      title: 'Task updated',
+      message: `The task "${updatedTask.title}" has been updated.`,
+      metadata: {
+        taskId,
+        projectId: updatedTask.projectId,
+        changes: changes
+          .filter((change) => change.type !== 'ASSIGNEE_CHANGED')
+          .map((change) => ({
+            type: change.type,
+            metadata: change.metadata,
+          })),
+      },
+    });
+  }
 
   return res.status(200).json({
     status: 'success',
