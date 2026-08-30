@@ -1,15 +1,16 @@
-import type { NextFunction, Request, Response } from 'express';
+import { env } from '../config/env';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 
-import { env } from '../config/env';
 import { usersRepository } from '../repositories/user.repository';
 
+import type { NextFunction, Response } from 'express';
+import type { AuthenticatedRequest } from '../types/auth.dto';
 interface AuthTokenPayload extends JwtPayload {
   id: string;
 }
 
 export const authMiddleware = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
