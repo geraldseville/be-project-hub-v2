@@ -8,9 +8,13 @@ export const notificationRepository = {
   },
 
   createNotifications(data: Prisma.NotificationCreateManyInput[]) {
-    return prisma.notification.createMany({
-      data,
-    });
+    return prisma.$transaction(
+      data.map((notification) =>
+        prisma.notification.create({
+          data: notification,
+        }),
+      ),
+    );
   },
 
   async getNotifications({
