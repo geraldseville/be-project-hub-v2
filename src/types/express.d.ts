@@ -1,20 +1,15 @@
-/// <reference types="node" />
+import { User as PrismaUser } from '@prisma/client';
+import { Multer } from 'multer';
 
-import type { User as PrismaUser } from '@prisma/client';
-import type { Multer } from 'multer';
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?:
-        | {
-            id: string;
-            email: string;
-          }
-        | PrismaUser;
-      file?: Multer.File;
-    }
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?:
+      | {
+          id: string;
+          email: string;
+          [key: string]: any;
+        }
+      | PrismaUser;
+    file?: Multer.File;
   }
 }
-
-export {};
