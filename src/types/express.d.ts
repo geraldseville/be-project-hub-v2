@@ -1,3 +1,5 @@
+/// <reference types="node" />
+
 import type { User as PrismaUser } from '@prisma/client';
 import type { Multer } from 'multer';
 

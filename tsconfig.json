@@ -2,5 +2,6 @@
   "compilerOptions": {
     "skipLibCheck": true
   },
+  "files": ["src/types/express.d.ts"],
   "include": ["src/**/*"]
 }
