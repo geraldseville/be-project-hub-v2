@@ -6,6 +6,7 @@ import {
 
 import { notificationRepository } from '../repositories/notification.respository';
 
+import { emitToUser } from '../socket/socket.gateway';
 interface CreateNotificationParams {
   recipientId: string;
   actorId?: string;
@@ -18,7 +19,7 @@ interface CreateNotificationParams {
 }
 
 export const notificationService = {
-  createNotification({
+  async createNotification({
     recipientId,
     actorId,
     type,
@@ -28,7 +29,7 @@ export const notificationService = {
     message,
     metadata,
   }: CreateNotificationParams) {
-    return notificationRepository.createNotification({
+    const notification = await notificationRepository.createNotification({
       recipient: {
         connect: {
           id: recipientId,
@@ -50,21 +51,32 @@ export const notificationService = {
       message,
       metadata,
     });
+
+    emitToUser(notification.recipientId, 'notification:new', notification);
+
+    return notification;
   },
 
-  createNotifications(notifications: CreateNotificationParams[]) {
-    return notificationRepository.createNotifications(
-      notifications.map((notification) => ({
-        recipientId: notification.recipientId,
-        actorId: notification.actorId,
-        type: notification.type,
-        entityType: notification.entityType,
-        entityId: notification.entityId,
-        title: notification.title,
-        message: notification.message,
-        metadata: notification.metadata,
-      })),
-    );
+  async createNotifications(notifications: CreateNotificationParams[]) {
+    const createdNotifications =
+      await notificationRepository.createNotifications(
+        notifications.map((notification) => ({
+          recipientId: notification.recipientId,
+          actorId: notification.actorId,
+          type: notification.type,
+          entityType: notification.entityType,
+          entityId: notification.entityId,
+          title: notification.title,
+          message: notification.message,
+          metadata: notification.metadata,
+        })),
+      );
+
+    createdNotifications.forEach((notification) => {
+      emitToUser(notification.recipientId, 'notification:new', notification);
+    });
+
+    return createdNotifications;
   },
 
   markNotificationAsRead(id: string, recipientId: string) {
