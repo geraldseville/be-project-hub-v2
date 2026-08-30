@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 import { taskRepository } from '../repositories/task.repository.js';
 import { taskActivityRepository } from '../repositories/task-activity.repository.js';
 import { notificationService } from '../services/notification.service.js';

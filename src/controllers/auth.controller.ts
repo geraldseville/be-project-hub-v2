@@ -8,7 +8,7 @@ import type {
   AuthenticatedRequest,
   LoginDto,
   RegisterDto,
-} from '../types/auth.dto';
+} from '../types/auth.dto.js';
 
 export const login = async (
   req: AuthenticatedRequest<{}, {}, LoginDto>,
