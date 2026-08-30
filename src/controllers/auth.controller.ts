@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 
-import { cookieOptions, generateToken } from '../lib/jwt';
-import { authRepository } from '../repositories/auth.repository';
+import { cookieOptions, generateToken } from '../lib/jwt.js';
+import { authRepository } from '../repositories/auth.repository.js';
 
 import type { Response } from 'express';
 import type {

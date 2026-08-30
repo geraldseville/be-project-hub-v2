@@ -1,8 +1,8 @@
-import { notificationService } from '../services/notification.service';
-import { notificationRepository } from '../repositories/notification.respository';
+import { notificationService } from '../services/notification.service.js';
+import { notificationRepository } from '../repositories/notification.respository.js';
 
 import type { Response } from 'express';
-import type { AuthenticatedRequest } from '../types/auth.dto';
+import type { AuthenticatedRequest } from '../types/auth.dto.js';
 
 export const getNotifications = async (
   req: AuthenticatedRequest,

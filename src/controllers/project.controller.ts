@@ -1,11 +1,14 @@
 import { NotificationType, NotificationEntityType } from '@prisma/client';
 
-import { projectRepository } from '../repositories/project.repository';
-import { notificationService } from '../services/notification.service';
+import { projectRepository } from '../repositories/project.repository.js';
+import { notificationService } from '../services/notification.service.js';
 
-import type { Request, Response } from 'express';
-import type { AuthenticatedRequest } from '../types/auth.dto';
-import type { CreateProjectDto, UpdateProjectDto } from '../types/project.dto';
+import type { Response } from 'express';
+import type { AuthenticatedRequest } from '../types/auth.dto.js';
+import type {
+  CreateProjectDto,
+  UpdateProjectDto,
+} from '../types/project.dto.js';
 
 export const createProject = async (
   req: AuthenticatedRequest<{}, {}, CreateProjectDto>,

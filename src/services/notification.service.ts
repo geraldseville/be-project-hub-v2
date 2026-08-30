@@ -4,9 +4,10 @@ import {
   Prisma,
 } from '@prisma/client';
 
-import { notificationRepository } from '../repositories/notification.respository';
+import { notificationRepository } from '../repositories/notification.respository.js';
 
-import { emitToUser } from '../socket/socket.gateway';
+import { emitToUser } from '../socket/socket.gateway.js';
+
 interface CreateNotificationParams {
   recipientId: string;
   actorId?: string;

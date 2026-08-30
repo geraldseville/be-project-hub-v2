@@ -1,10 +1,10 @@
 import http from 'http';
 import dotenv from 'dotenv';
-import { registerProcessHandlers } from './config/process';
-import { initializeSocket } from './socket/socket.server';
-import { setSocketServer } from './socket/socket.gateway';
 
-import app from './app';
+import { registerProcessHandlers } from './config/process.js';
+import { initializeSocket } from './socket/socket.server.js';
+import { setSocketServer } from './socket/socket.gateway.js';
+import app from './app.js';
 
 dotenv.config();
 

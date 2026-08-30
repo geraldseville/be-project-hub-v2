@@ -1,8 +1,8 @@
 import express from 'express';
 import multer from 'multer';
 
-import { uploadProfileImage } from '../controllers/image.controller';
-import { authMiddleware } from '../middlewares/auth.middleware';
+import { uploadProfileImage } from '../controllers/image.controller.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 

@@ -1,11 +1,11 @@
 import express from 'express';
 
-import authRoutes from './auth.route';
-import userRoute from './user.route';
-import imageRoute from './image.route';
-import projectRoute from './project.route';
-import taskRoute from './task.route';
-import notificationRoute from './notification.route';
+import authRoutes from './auth.route.js';
+import userRoute from './user.route.js';
+import imageRoute from './image.route.js';
+import projectRoute from './project.route.js';
+import taskRoute from './task.route.js';
+import notificationRoute from './notification.route.js';
 
 const router = express.Router();
 

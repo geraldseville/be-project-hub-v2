@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { createTaskSchema } from './task.validator';
+import { createTaskSchema } from './task.validator.js';
 
 export const createProjectSchema = z
   .object({

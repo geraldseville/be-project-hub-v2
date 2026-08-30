@@ -1,10 +1,11 @@
 import { env } from '../config/env';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 
-import { usersRepository } from '../repositories/user.repository';
+import { usersRepository } from '../repositories/user.repository.js';
 
 import type { NextFunction, Response } from 'express';
-import type { AuthenticatedRequest } from '../types/auth.dto';
+import type { AuthenticatedRequest } from '../types/auth.dto.js';
+
 interface AuthTokenPayload extends JwtPayload {
   id: string;
 }

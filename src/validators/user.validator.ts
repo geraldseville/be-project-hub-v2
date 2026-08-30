@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { isValidTimezone } from '../utils/dateTime.utils';
+import { isValidTimezone } from '../utils/dateTime.utils.js';
 
 export const changeUserPasswordSchema = z.object({
   newPassword: z.string().min(1, 'Password is required'),

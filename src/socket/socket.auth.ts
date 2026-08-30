@@ -1,8 +1,10 @@
-import type { Socket } from 'socket.io';
-import jwt, { type JwtPayload } from 'jsonwebtoken';
-import { usersRepository } from '../repositories/user.repository';
-
 import { env } from '../config/env';
+
+import jwt, { type JwtPayload } from 'jsonwebtoken';
+
+import { usersRepository } from '../repositories/user.repository.js';
+
+import type { Socket } from 'socket.io';
 
 interface AuthTokenPayload extends JwtPayload {
   id: string;

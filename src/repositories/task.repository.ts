@@ -1,6 +1,6 @@
-import type { Prisma } from '@prisma/client';
+import { prisma } from '../lib/prisma.js';
 
-import { prisma } from '../lib/prisma';
+import type { Prisma } from '@prisma/client';
 
 export const taskRepository = {
   createTask(data: Prisma.TaskCreateInput) {

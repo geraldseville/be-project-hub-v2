@@ -1,7 +1,7 @@
-import type { CookieOptions, Response } from 'express';
 import jwt from 'jsonwebtoken';
-
 import { env } from '../config/env';
+
+import type { CookieOptions, Response } from 'express';
 
 export const cookieOptions: CookieOptions = {
   httpOnly: true,

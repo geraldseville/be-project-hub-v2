@@ -1,6 +1,6 @@
-import type { Prisma, TaskActivityType } from '@prisma/client';
+import { prisma } from '../lib/prisma.js';
 
-import { prisma } from '../lib/prisma';
+import type { Prisma, TaskActivityType } from '@prisma/client';
 
 interface CreateTaskActivityInput {
   taskId: string;

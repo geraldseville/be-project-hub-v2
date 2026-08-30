@@ -1,11 +1,11 @@
 import { prisma } from '../lib/prisma';
-import { taskRepository } from '../repositories/task.repository';
-import { taskActivityRepository } from '../repositories/task-activity.repository';
-import { notificationService } from '../services/notification.service';
+import { taskRepository } from '../repositories/task.repository.js';
+import { taskActivityRepository } from '../repositories/task-activity.repository.js';
+import { notificationService } from '../services/notification.service.js';
 
 import type { Response } from 'express';
-import type { AuthenticatedRequest } from '../types/auth.dto';
-import type { CreateTaskDto, UpdateTaskDto } from '../types/task.dto';
+import type { AuthenticatedRequest } from '../types/auth.dto.js';
+import type { CreateTaskDto, UpdateTaskDto } from '../types/task.dto.js';
 import type { TaskActivityType } from '@prisma/client';
 
 export const createTask = async (

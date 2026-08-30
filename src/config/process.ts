@@ -1,6 +1,6 @@
-import type { Server } from 'node:http';
+import { prisma } from '../lib/prisma.js';
 
-import { prisma } from '../lib/prisma';
+import type { Server } from 'node:http';
 
 export function registerProcessHandlers(server: Server) {
   async function shutdown(code: number) {

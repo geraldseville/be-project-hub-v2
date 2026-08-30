@@ -1,6 +1,8 @@
 import { Server } from 'socket.io';
+
+import { socketAuthMiddleware } from './socket.auth.js';
+
 import type { Server as HttpServer } from 'http';
-import { socketAuthMiddleware } from './socket.auth';
 
 export function initializeSocket(httpServer: HttpServer) {
   const io = new Server(httpServer, {

@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
+import { loginSchema, registerSchema } from '../validators/auth.validator.js';
+
 import type { Request } from 'express';
 import type { User } from '@prisma/client';
-
-import { loginSchema, registerSchema } from '../validators/auth.validator';
 
 export type AuthenticatedRequest<
   TParams = Record<string, string>,

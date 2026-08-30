@@ -1,6 +1,6 @@
 import type { User as PrismaUser } from '@prisma/client';
 import type { Multer } from 'multer';
-import { Request } from 'express';
+import type { Request } from 'express';
 
 declare global {
   namespace Express {

@@ -1,11 +1,11 @@
 import express from 'express';
 
-import { authMiddleware } from '../middlewares/auth.middleware';
-import { validateRequest } from '../middlewares/validate.middleware';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
+import { validateRequest } from '../middlewares/validate.middleware.js';
 import {
   createProjectSchema,
   updateProjectSchema,
-} from '../validators/project.validator';
+} from '../validators/project.validator.js';
 import {
   createProject,
   deleteProject,
@@ -13,7 +13,7 @@ import {
   getProjects,
   updateProject,
 } from '../controllers/project.controller';
-import { getTasksByProjectId } from '../controllers/task.controller';
+import { getTasksByProjectId } from '../controllers/task.controller.js';
 
 const router = express.Router();
 

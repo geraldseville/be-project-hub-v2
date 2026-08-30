@@ -1,12 +1,12 @@
 import express from 'express';
 
-import { authMiddleware } from '../middlewares/auth.middleware';
-import { validateRequest } from '../middlewares/validate.middleware';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
+import { validateRequest } from '../middlewares/validate.middleware.js';
 import {
   changeUserPasswordSchema,
   updateUserSavedColorsSchema,
   updateUserSchema,
-} from '../validators/user.validator';
+} from '../validators/user.validator.js';
 import {
   changeMyPassword,
   deleteMyAccount,
@@ -14,7 +14,7 @@ import {
   getUser,
   updateMe,
   updateMySavedColors,
-} from '../controllers/user.controller';
+} from '../controllers/user.controller.js';
 
 const router = express.Router();
 

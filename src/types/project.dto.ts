@@ -3,7 +3,7 @@ import { z } from 'zod';
 import {
   createProjectSchema,
   updateProjectSchema,
-} from '../validators/project.validator';
+} from '../validators/project.validator.js';
 
 export type CreateProjectDto = z.infer<typeof createProjectSchema>;
 

@@ -4,7 +4,7 @@ import {
   changeUserPasswordSchema,
   updateUserSchema,
   updateUserSavedColorsSchema,
-} from '../validators/user.validator';
+} from '../validators/user.validator.js';
 
 export type ChangeUserPasswordDto = z.infer<typeof changeUserPasswordSchema>;
 
