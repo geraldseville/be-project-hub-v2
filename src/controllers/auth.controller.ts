@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import type { User } from '@prisma/client';
 
 import bcrypt from 'bcrypt';
 
@@ -7,7 +8,7 @@ import { authRepository } from '../repositories/auth.repository';
 import type { LoginDto, RegisterDto } from '../types/auth.dto';
 
 export const login = async (
-  req: Request<{}, {}, LoginDto>,
+  req: Request<{}, {}, LoginDto> & { user?: User },
   res: Response,
 ): Promise<Response | void> => {
   const { email, password } = req.body;
