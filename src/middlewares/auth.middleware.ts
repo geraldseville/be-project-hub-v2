@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 
 import { env } from '../config/env';
-import { prisma } from '../lib/prisma';
+import { usersRepository } from '../repositories/user.repository';
 
 interface AuthTokenPayload extends JwtPayload {
   id: string;
@@ -35,11 +35,7 @@ export const authMiddleware = async (
   try {
     const decoded = jwt.verify(token, env.JWT_SECRET) as AuthTokenPayload;
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: decoded.id,
-      },
-    });
+    const user = await usersRepository.findUserById(decoded.id);
 
     if (!user) {
       res.status(401).json({
