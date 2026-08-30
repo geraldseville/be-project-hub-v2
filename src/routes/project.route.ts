@@ -12,7 +12,7 @@ import {
   getProject,
   getProjects,
   updateProject,
-} from '../controllers/project.controller';
+} from '../controllers/project.controller.js';
 import { getTasksByProjectId } from '../controllers/task.controller.js';
 
 const router = express.Router();
