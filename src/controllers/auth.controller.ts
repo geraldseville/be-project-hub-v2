@@ -57,7 +57,7 @@ export const logout = async (
 };
 
 export const me = async (
-  req: Request,
+  req: Request & { user?: User },
   res: Response,
 ): Promise<Response | void> => {
   const userId = req.user!.id;
@@ -83,7 +83,7 @@ export const me = async (
 };
 
 export const register = async (
-  req: Request<{}, {}, RegisterDto>,
+  req: Request<{}, {}, RegisterDto> & { user?: User },
   res: Response,
 ): Promise<Response | void> => {
   const { firstName, lastName, email, password } = req.body;
