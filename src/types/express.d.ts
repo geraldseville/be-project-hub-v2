@@ -6,7 +6,12 @@ import type { Multer } from 'multer';
 declare global {
   namespace Express {
     interface Request {
-      user?: PrismaUser;
+      user?:
+        | {
+            id: string;
+            email: string;
+          }
+        | PrismaUser;
       file?: Multer.File;
     }
   }
