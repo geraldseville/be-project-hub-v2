@@ -1,10 +1,11 @@
-import type { Request, Response } from 'express';
-
 import { notificationService } from '../services/notification.service';
 import { notificationRepository } from '../repositories/notification.respository';
 
+import type { Response } from 'express';
+import type { AuthenticatedRequest } from '../types/auth.dto';
+
 export const getNotifications = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -34,7 +35,7 @@ export const getNotifications = async (
 };
 
 export const markNotificationAsRead = async (
-  req: Request<{ notificationId: string }>,
+  req: AuthenticatedRequest<{ notificationId: string }>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -67,7 +68,7 @@ export const markNotificationAsRead = async (
 };
 
 export const markNotificationsAsRead = async (
-  req: Request<{}, {}, { notificationIds: string[] }>,
+  req: AuthenticatedRequest<{}, {}, { notificationIds: string[] }>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -96,7 +97,7 @@ export const markNotificationsAsRead = async (
 };
 
 export const markAllNotificationsAsRead = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {

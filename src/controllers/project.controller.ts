@@ -1,12 +1,14 @@
-import type { Request, Response } from 'express';
 import { NotificationType, NotificationEntityType } from '@prisma/client';
 
 import { projectRepository } from '../repositories/project.repository';
 import { notificationService } from '../services/notification.service';
+
+import type { Request, Response } from 'express';
+import type { AuthenticatedRequest } from '../types/auth.dto';
 import type { CreateProjectDto, UpdateProjectDto } from '../types/project.dto';
 
 export const createProject = async (
-  req: Request<{}, {}, CreateProjectDto>,
+  req: AuthenticatedRequest<{}, {}, CreateProjectDto>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -81,7 +83,7 @@ export const createProject = async (
 };
 
 export const deleteProject = async (
-  req: Request<{ projectId: string }>,
+  req: AuthenticatedRequest<{ projectId: string }>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -131,7 +133,7 @@ export const deleteProject = async (
 };
 
 export const getProject = async (
-  req: Request<{ projectId: string }>,
+  req: AuthenticatedRequest<{ projectId: string }>,
   res: Response,
 ): Promise<Response | void> => {
   const { projectId } = req.params;
@@ -154,7 +156,7 @@ export const getProject = async (
   });
 };
 
-export const getProjects = async (_: Request, res: Response) => {
+export const getProjects = async (_: AuthenticatedRequest, res: Response) => {
   const projects = await projectRepository.getAllProjects();
 
   return res.status(201).json({
@@ -167,7 +169,7 @@ export const getProjects = async (_: Request, res: Response) => {
 };
 
 export const updateProject = async (
-  req: Request<{ projectId: string }, {}, UpdateProjectDto>,
+  req: AuthenticatedRequest<{ projectId: string }, {}, UpdateProjectDto>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {

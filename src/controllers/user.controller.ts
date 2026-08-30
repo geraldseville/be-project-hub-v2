@@ -1,16 +1,17 @@
-import type { Request, Response } from 'express';
-
 import bcrypt from 'bcryptjs';
 
+import { usersRepository } from '../repositories/user.repository';
+
+import type { Response } from 'express';
+import type { AuthenticatedRequest } from '../types/auth.dto';
 import type {
   ChangeUserPasswordDto,
   UpdateUserDto,
   UpdateUserSavedColorsDto,
 } from '../types/user.dto';
-import { usersRepository } from '../repositories/user.repository';
 
 export const changeMyPassword = async (
-  req: Request<{}, {}, ChangeUserPasswordDto>,
+  req: AuthenticatedRequest<{}, {}, ChangeUserPasswordDto>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -40,7 +41,7 @@ export const changeMyPassword = async (
 };
 
 export const deleteMyAccount = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -72,7 +73,7 @@ export const deleteMyAccount = async (
 };
 
 export const getUsers = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -112,7 +113,7 @@ export const getUsers = async (
 };
 
 export const getUser = async (
-  req: Request<{ userId: string }>,
+  req: AuthenticatedRequest<{ userId: string }>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -145,7 +146,7 @@ export const getUser = async (
 };
 
 export const updateMe = async (
-  req: Request<{}, {}, UpdateUserDto>,
+  req: AuthenticatedRequest<{}, {}, UpdateUserDto>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -193,7 +194,7 @@ export const updateMe = async (
 };
 
 export const updateMySavedColors = async (
-  req: Request<{}, {}, UpdateUserSavedColorsDto>,
+  req: AuthenticatedRequest<{}, {}, UpdateUserSavedColorsDto>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {

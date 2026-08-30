@@ -1,14 +1,15 @@
-import type { Request, Response } from 'express';
-
-import type { CreateTaskDto, UpdateTaskDto } from '../types/task.dto';
-import type { TaskActivityType } from '@prisma/client';
 import { prisma } from '../lib/prisma';
 import { taskRepository } from '../repositories/task.repository';
 import { taskActivityRepository } from '../repositories/task-activity.repository';
 import { notificationService } from '../services/notification.service';
 
+import type { Response } from 'express';
+import type { AuthenticatedRequest } from '../types/auth.dto';
+import type { CreateTaskDto, UpdateTaskDto } from '../types/task.dto';
+import type { TaskActivityType } from '@prisma/client';
+
 export const createTask = async (
-  req: Request<{}, {}, CreateTaskDto>,
+  req: AuthenticatedRequest<{}, {}, CreateTaskDto>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -95,7 +96,7 @@ export const createTask = async (
 };
 
 export const createTaskComment = async (
-  req: Request<{ taskId: string }>,
+  req: AuthenticatedRequest<{ taskId: string }>,
   res: Response,
 ): Promise<Response | void> => {
   try {
@@ -185,7 +186,7 @@ export const createTaskComment = async (
 };
 
 export const deleteTask = async (
-  req: Request<{ taskId: string }>,
+  req: AuthenticatedRequest<{ taskId: string }>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
@@ -233,7 +234,7 @@ export const deleteTask = async (
 };
 
 export const getTask = async (
-  req: Request<{ taskId: string }>,
+  req: AuthenticatedRequest<{ taskId: string }>,
   res: Response,
 ): Promise<Response | void> => {
   const { taskId } = req.params;
@@ -256,7 +257,7 @@ export const getTask = async (
   });
 };
 
-export const getTasks = async (req: Request, res: Response) => {
+export const getTasks = async (req: AuthenticatedRequest, res: Response) => {
   const page = Number(req.query.page ?? 1);
   const limit = Number(req.query.limit ?? 20);
 
@@ -273,7 +274,7 @@ export const getTasks = async (req: Request, res: Response) => {
 };
 
 export const getTasksByProjectId = async (
-  req: Request<{ projectId: string }>,
+  req: AuthenticatedRequest<{ projectId: string }>,
   res: Response,
 ): Promise<Response> => {
   const { projectId } = req.params;
@@ -305,7 +306,7 @@ export const getTasksByProjectId = async (
 };
 
 export const getTaskActivities = async (
-  req: Request<{ taskId: string }>,
+  req: AuthenticatedRequest<{ taskId: string }>,
   res: Response,
 ): Promise<Response> => {
   const { taskId } = req.params;
@@ -339,7 +340,7 @@ interface TaskActivityChanges {
 }
 
 export const updateTask = async (
-  req: Request<{ taskId: string }, {}, UpdateTaskDto>,
+  req: AuthenticatedRequest<{ taskId: string }, {}, UpdateTaskDto>,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
