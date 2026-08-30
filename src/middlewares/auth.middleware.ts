@@ -1,4 +1,4 @@
-import { env } from '../config/env';
+import { env } from '../config/env.js';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 
 import { usersRepository } from '../repositories/user.repository.js';
