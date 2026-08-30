@@ -1,14 +1,17 @@
-import type { Request, Response } from 'express';
-import type { User } from '@prisma/client';
-
 import bcrypt from 'bcrypt';
 
 import { cookieOptions, generateToken } from '../lib/jwt';
 import { authRepository } from '../repositories/auth.repository';
-import type { LoginDto, RegisterDto } from '../types/auth.dto';
+
+import type { Response } from 'express';
+import type {
+  AuthenticatedRequest,
+  LoginDto,
+  RegisterDto,
+} from '../types/auth.dto';
 
 export const login = async (
-  req: Request<{}, {}, LoginDto> & { user?: User },
+  req: AuthenticatedRequest<{}, {}, LoginDto>,
   res: Response,
 ): Promise<Response | void> => {
   const { email, password } = req.body;
@@ -45,7 +48,7 @@ export const login = async (
 };
 
 export const logout = async (
-  _req: Request,
+  _req: AuthenticatedRequest,
   res: Response,
 ): Promise<Response | void> => {
   res.clearCookie('jwt', cookieOptions);
@@ -57,7 +60,7 @@ export const logout = async (
 };
 
 export const me = async (
-  req: Request & { user?: User },
+  req: AuthenticatedRequest,
   res: Response,
 ): Promise<Response | void> => {
   const userId = req.user!.id;
@@ -83,7 +86,7 @@ export const me = async (
 };
 
 export const register = async (
-  req: Request<{}, {}, RegisterDto> & { user?: User },
+  req: AuthenticatedRequest<{}, {}, RegisterDto>,
   res: Response,
 ): Promise<Response | void> => {
   const { firstName, lastName, email, password } = req.body;

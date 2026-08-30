@@ -1,11 +1,12 @@
-import type { Request, Response } from 'express';
-
 import { supabase } from '../config/supabase.js';
+
+import type { Response } from 'express';
+import type { AuthenticatedRequest } from '../types/auth.dto.js';
 
 const userProfileImageBucket = 'user-profile-image';
 
 export const uploadProfileImage = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
 ): Promise<Response | void> => {
   if (!req.user) {
