@@ -7,7 +7,7 @@ export const validateRequest = (schema: ZodType) => {
 
     if (!result.success) {
       res.status(400).json({
-        error: result.error.flatten(),
+        message: result.error.flatten(),
       });
 
       return;

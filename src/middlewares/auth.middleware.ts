@@ -28,7 +28,7 @@ export const authMiddleware = async (
 
   if (!token) {
     res.status(401).json({
-      error: 'No token',
+      message: 'no token',
     });
 
     return;
@@ -41,7 +41,7 @@ export const authMiddleware = async (
 
     if (!user) {
       res.status(401).json({
-        error: 'user not found',
+        message: 'user not found',
       });
 
       return;
@@ -54,7 +54,7 @@ export const authMiddleware = async (
     console.error(error);
 
     res.status(401).json({
-      error: error instanceof Error ? error.message : 'Invalid token',
+      message: error instanceof Error ? error.message : 'Invalid token',
     });
   }
 };

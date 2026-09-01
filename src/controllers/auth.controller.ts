@@ -21,7 +21,7 @@ export const login = async (
   if (!user) {
     return res.status(401).json({
       status: 'error',
-      error: 'invalid email or password.',
+      message: 'invalid email or password.',
     });
   }
 
@@ -30,7 +30,7 @@ export const login = async (
   if (!isPasswordValid) {
     return res.status(401).json({
       status: 'error',
-      error: 'invalid email or password.',
+      message: 'invalid email or password.',
     });
   }
 
