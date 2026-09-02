@@ -1,6 +1,9 @@
 import cors from 'cors';
 
-export const allowedOrigins = [process.env.CLIENT_URL, 'http://localhost:3000'];
+export const allowedOrigins = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 export const corsConfig = cors({
   origin(origin, callback) {
