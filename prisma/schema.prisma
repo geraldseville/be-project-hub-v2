@@ -28,6 +28,7 @@ model User {
   role                  String?
   bio                   String?
   imageUrl              String?
+  socials               Json?
 
   timezone              String?
   timeFormat            TimeFormat @default(H12)
