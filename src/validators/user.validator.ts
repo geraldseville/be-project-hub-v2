@@ -32,6 +32,8 @@ export const updateUserSchema = z.object({
 
   imageUrl: z.string().trim().nullable().optional(),
 
+  socials: z.record(z.string(), z.string()).optional(),
+
   timezone: z
     .string()
     .trim()
